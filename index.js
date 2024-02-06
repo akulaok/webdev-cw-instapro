@@ -1,6 +1,6 @@
-import { getPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
+import { addPost, getPosts } from "./api.js";
 import {
   ADD_POSTS_PAGE,
   AUTH_PAGE,
@@ -112,7 +112,16 @@ const renderApp = () => {
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
         console.log("Добавляю пост...", { description, imageUrl });
-        goToPage(POSTS_PAGE);
+        addPost({
+          token: getToken(),
+          description,
+          imageUrl,
+        }).then(() => {
+          goToPage(POSTS_PAGE);
+        })
+        .catch((error) => {
+          alert("Заполнены не все поля");
+        });
       },
     });
   }
@@ -130,4 +139,4 @@ const renderApp = () => {
   }
 };
 
-goToPage(POSTS_PAGE);
+goToPage(ADD_POSTS_PAGE);
