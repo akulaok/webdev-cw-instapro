@@ -2,21 +2,17 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage } from "../index.js";
 
+
 export function renderPostsPageComponent({ appEl }) {
-  // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
 
-  /**
-   * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
-   * можно использовать https://date-fns.org/v2.29.3/docs/formatDistanceToNow
-   */
-  appEl.innerHTML = posts.map((post)=> {
+  appEl.innerHTML = posts.map((post) => {
     return `
     <div class="page-container">
       <div class="header-container"></div>
       <ul class="posts">
         <li class="post">
-          <div class="post-header" data-user-id="642d00329b190443860c2f31">
+        <div class="post-header" data-user-id="${post.user.id}">
               <img src="${post.user.imageUrl}" class="post-header__user-image">
               <p class="post-header__user-name">${post.user.name}</p>
           </div>
