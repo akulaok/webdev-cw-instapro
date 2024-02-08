@@ -72,7 +72,8 @@ export function addPost({ token, description, imageUrl }) {
       Authorization: token,
     },
     body: JSON.stringify({
-      description,
+      description: description.replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;"),
       imageUrl
     })
   })
@@ -105,4 +106,34 @@ export function getPostsUser({ token, id }) {
     .then((data) => {
       return data.posts;
     });
+}
+
+export function addLike({ token, postId }) {
+  return fetch(`${postsHost}/${postId}/like`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Лайкать посты могут только авторизованные пользователи");
+      }
+      return response.json();
+    })
+}
+
+export function removeLike({ token, postId }) {
+  return fetch(`${postsHost}/${postId}/dislike`, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Лайкать посты могут только авторизованные пользователи");
+      }
+      return response.json();
+    })
 }
