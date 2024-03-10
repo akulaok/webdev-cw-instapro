@@ -2,12 +2,14 @@ import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
 import { posts, goToPage, getToken, renderApp } from "../index.js";
 import { addLike, getPosts, removeLike } from "../api.js";
-
+import { formatDistance } from 'date-fns'
+import { ru } from 'date-fns/locale'
 
 export function renderPostsPageComponent({ appEl }) {
   console.log("Актуальный список постов:", posts);
 
   appEl.innerHTML = posts.map((post, index) => {
+    const createDate = formatDistance(new Date(post.createdAt), new Date, {locale: ru});
     return `
     <div class="page-container">
       <div class="header-container"></div>
@@ -38,7 +40,7 @@ export function renderPostsPageComponent({ appEl }) {
             ${post.description}
           </p>
           <p class="post-date">
-          ${post.createdAt}
+          ${createDate}
           </p>
         </li>  
       </ul>
